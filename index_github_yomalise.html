@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Para Yomalise ❤️ - Feliz Cumpleaños</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel:wght@600;700;800&family=Great+Vibes&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      overflow-x: hidden;
+    }
+
+    .font-cinzel { font-family: 'Cinzel', serif; }
+    .font-serif-title { font-family: 'Playfair Display', serif; }
+    .font-calligraphy { font-family: 'Great Vibes', cursive; }
+    .font-signature { font-family: 'Alex Brush', cursive; }
+
+    /* 3D Envelope perspective */
+    .envelope-perspective {
+      perspective: 1400px;
+    }
+
+    .envelope-top-flap {
+      transform-origin: top center;
+      transition: transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 25;
+    }
+
+    .envelope-top-flap.opened {
+      transform: rotateX(180deg);
+      z-index: 5;
+    }
+
+    .letter-preview-sheet {
+      transition: transform 1.2s cubic-bezier(0.34, 1.25, 0.64, 1), opacity 0.8s ease;
+      transform: translateY(0);
+      z-index: 10;
+    }
+
+    .letter-preview-sheet.extracted {
+      transform: translateY(-56%);
+      z-index: 30;
+    }
+
+    /* Wax seal pulsating effect */
+    @keyframes sealPulse {
+      0%, 100% {
+        box-shadow: 0 4px 20px rgba(225, 29, 72, 0.45), inset 0 0 10px rgba(0,0,0,0.35);
+      }
+      50% {
+        box-shadow: 0 4px 35px rgba(244, 63, 94, 0.9), inset 0 0 15px rgba(0,0,0,0.45);
+      }
+    }
+
+    .wax-seal {
+      animation: sealPulse 2.4s infinite ease-in-out;
+    }
+
+    /* Floating petals and hearts */
+    @keyframes floatParticle {
+      0% {
+        transform: translateY(105vh) translateX(0) rotate(0deg);
+        opacity: 0;
+      }
+      15% {
+        opacity: 0.9;
+      }
+      85% {
+        opacity: 0.9;
+      }
+      100% {
+        transform: translateY(-10vh) translateX(45px) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    .floating-particle {
+      position: absolute;
+      pointer-events: none;
+      animation: floatParticle linear infinite;
+    }
+
+    /* Textured vintage parchment */
+    .parchment-sheet {
+      background-color: #faf5eb;
+      background-image: 
+        radial-gradient(#e5d8b8 1px, transparent 1px),
+        radial-gradient(#e5d8b8 1px, #faf5eb 1px);
+      background-size: 26px 26px;
+      background-position: 0 0, 13px 13px;
+    }
+
+    /* Custom elegant scrollbar */
+    .letter-scroll::-webkit-scrollbar {
+      width: 6px;
+    }
+    .letter-scroll::-webkit-scrollbar-track {
+      background: rgba(229, 216, 184, 0.35);
+      border-radius: 8px;
+    }
+    .letter-scroll::-webkit-scrollbar-thumb {
+      background: #c59b48;
+      border-radius: 8px;
+    }
+
+    /* Globos medianos de cumpleaños */
+    #birthday-balloons {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .birthday-balloon {
+      position: absolute;
+      bottom: -180px;
+      width: 104px;
+      height: 128px;
+      border-radius: 50% 50% 46% 46%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 13px 10px 18px;
+      color: #fff9ed;
+      text-align: center;
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      line-height: 1.35;
+      font-weight: 800;
+      letter-spacing: .35px;
+      text-shadow: 0 1px 4px rgba(65, 0, 20, .55);
+      box-shadow: inset -10px -9px 18px rgba(0,0,0,.16),
+                  inset 8px 8px 15px rgba(255,255,255,.28),
+                  0 8px 18px rgba(0,0,0,.2);
+      animation: balloonRise 17s linear infinite;
+    }
+    .birthday-balloon::before {
+      content: "";
+      position: absolute;
+      width: 18px;
+      height: 11px;
+      bottom: -5px;
+      left: calc(50% - 9px);
+      background: inherit;
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      filter: brightness(.88);
+    }
+    .birthday-balloon::after {
+      content: "";
+      position: absolute;
+      top: 12px;
+      left: 19px;
+      width: 13px;
+      height: 34px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.24);
+      transform: rotate(24deg);
+    }
+    .birthday-balloon .balloon-string {
+      position: absolute;
+      top: calc(100% + 5px);
+      left: 50%;
+      height: 58px;
+      border-left: 1px solid rgba(255,235,220,.65);
+      transform: rotate(3deg);
+      transform-origin: top;
+    }
+    @keyframes balloonRise {
+      0% { transform: translate3d(0, 0, 0) rotate(-5deg); opacity: 0; }
+      8% { opacity: .98; }
+      50% { transform: translate3d(28px, -55vh, 0) rotate(6deg); }
+      92% { opacity: .95; }
+      100% { transform: translate3d(-18px, -125vh, 0) rotate(-7deg); opacity: 0; }
+    }
+    @media (max-width: 480px) {
+      .birthday-balloon { width: 88px; height: 110px; font-size: 8.5px; }
+    }
+
+  </style>
+</head>
+
+<body class="bg-gradient-to-br from-[#1a060d] via-[#120711] to-[#240813] min-h-screen text-stone-200 flex flex-col justify-between items-center relative overflow-hidden select-none">
+
+  <!-- Ambient background glow elements -->
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 bg-rose-600/15 rounded-full blur-[110px]"></div>
+    <div class="absolute -bottom-10 left-1/3 w-80 h-80 bg-amber-600/10 rounded-full blur-[90px]"></div>
+  </div>
+
+  <!-- Background floating particles container -->
+  <div id="particles-container" class="fixed inset-0 pointer-events-none z-0"></div>
+  <div id="birthday-balloons" aria-hidden="true"></div>
+
+  <!-- Hidden YouTube Player Container -->
+  <div class="fixed -bottom-96 -left-96 w-10 h-10 opacity-0 pointer-events-none">
+    <div id="youtube-player"></div>
+  </div>
+
+  <header class="w-full max-w-4xl mx-auto px-4 py-3.5 z-40 flex items-center justify-between">
+    <div class="flex items-center space-x-2">
+      <span class="text-rose-400 text-xl animate-pulse">✨</span>
+      <h1 class="text-xs sm:text-sm uppercase tracking-widest text-amber-200/90 font-cinzel font-semibold">
+        Carta de Cumpleaños
+      </h1>
+    </div>
+
+    <!-- YouTube Music Bar -->
+    <div class="flex items-center gap-2 bg-stone-900/85 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-rose-500/25 shadow-lg text-stone-200">
+      <button id="toggle-music-btn" class="w-8 h-8 flex items-center justify-center rounded-full bg-rose-600/40 text-rose-300 hover:bg-rose-600 hover:text-white transition active:scale-95 shadow">
+        <svg id="music-play-icon" class="w-4 h-4 ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M8 5v14l11-7z"/>
+        </svg>
+        <svg id="music-pause-icon" class="w-4 h-4 hidden" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+        </svg>
+      </button>
+
+      <div class="text-xs pr-1 hidden sm:block max-w-[170px]">
+        <p class="font-medium text-amber-100 truncate">Contigo Na Más - Remix</p>
+        <p class="text-[10px] text-rose-300/70" id="music-track-status">Toca el sobre para escuchar</p>
+      </div>
+
+      <!-- Volume control -->
+      <div class="flex items-center gap-1.5 pl-1 border-l border-stone-700/60">
+        <span class="text-stone-400 text-xs">🔊</span>
+        <input id="volume-slider" type="range" min="0" max="100" value="85" class="w-14 sm:w-16 h-1 bg-stone-700 accent-rose-500 rounded-lg cursor-pointer">
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1 flex flex-col items-center justify-center w-full px-4 relative z-20 py-4">
+    
+    <!-- Instruction banner -->
+    <div id="instruction-pill" class="mb-5 px-4 py-1.5 rounded-full bg-stone-900/80 border border-rose-500/40 text-rose-200 text-xs sm:text-sm tracking-wide shadow-md transition-all duration-500 flex items-center gap-2">
+      <span class="inline-block animate-bounce">💌</span>
+      <span>Toca el sobre para abrir tu carta</span>
+    </div>
+
+    <!-- 3D Envelope Wrapper -->
+    <div class="relative w-80 sm:w-96 h-56 sm:h-64 envelope-perspective cursor-pointer group" id="envelope-wrapper">
+      
+      <!-- Letter sheet that peeks and slides up -->
+      <div id="envelope-letter-peek" class="letter-preview-sheet absolute left-4 right-4 top-4 h-48 bg-[#fdfbf7] rounded-lg shadow-xl p-5 flex flex-col justify-between border border-stone-200">
+        <div>
+          <p class="text-xs font-serif-title text-rose-900 font-bold">Para: Dulce Yomalise ❤️</p>
+          <div class="h-0.5 w-16 bg-rose-200 mt-1 mb-3"></div>
+          <div class="space-y-2">
+            <div class="h-1.5 w-full bg-stone-200/80 rounded"></div>
+            <div class="h-1.5 w-5/6 bg-stone-200/80 rounded"></div>
+            <div class="h-1.5 w-4/6 bg-stone-200/80 rounded"></div>
+            <div class="h-1.5 w-3/6 bg-stone-200/80 rounded"></div>
+          </div>
+        </div>
+        <div class="text-right">
+          <span class="text-[11px] font-signature text-rose-900/90 text-lg">Con amor, tu enamorado Cesar</span>
+        </div>
+      </div>
+
+      <!-- Envelope Body Base Container -->
+      <div class="absolute inset-0 bg-[#2d0f15] rounded-xl shadow-2xl border-b border-rose-950 overflow-hidden z-20 flex flex-col justify-end">
+        <div class="absolute inset-0 bg-gradient-to-b from-[#240c11] to-[#3a131b]"></div>
+
+        <!-- Envelope fold flaps in CSS -->
+        <div class="absolute inset-0 z-20 pointer-events-none">
+          <div class="absolute left-0 bottom-0 top-0 w-0 h-0 border-l-[160px] sm:border-l-[192px] border-l-[#3a151f] border-y-[112px] sm:border-y-[128px] border-y-transparent"></div>
+          <div class="absolute right-0 bottom-0 top-0 w-0 h-0 border-r-[160px] sm:border-r-[192px] border-r-[#33111a] border-y-[112px] sm:border-y-[128px] border-y-transparent"></div>
+          <div class="absolute bottom-0 left-0 right-0 h-0 border-b-[120px] sm:border-b-[140px] border-b-[#491a25] border-x-[160px] sm:border-x-[192px] border-x-transparent"></div>
+        </div>
+      </div>
+
+      <!-- Top Flap (Folds open in 3D) -->
+      <div id="envelope-top-flap" class="envelope-top-flap absolute top-0 left-0 right-0 h-32 sm:h-36">
+        <div class="w-0 h-0 mx-auto border-t-[122px] sm:border-t-[140px] border-t-[#591f2c] border-x-[160px] sm:border-x-[192px] border-x-transparent drop-shadow-lg"></div>
+      </div>
+
+      <!-- Wax Seal with Heart Emblem -->
+      <div id="wax-seal" class="wax-seal absolute top-24 sm:top-28 left-1/2 -translate-x-1/2 z-30 w-16 h-16 rounded-full bg-gradient-to-br from-rose-600 via-red-700 to-rose-900 border-2 border-rose-300/40 flex flex-col items-center justify-center cursor-pointer transform hover:scale-105 transition active:scale-95 shadow-2xl">
+        <div class="w-11 h-11 rounded-full border border-amber-200/40 flex flex-col items-center justify-center text-amber-200">
+          <span class="text-sm">❤️</span>
+          <span class="text-[7px] tracking-tight uppercase font-cinzel font-bold text-amber-100">Abrir</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recipient hint badge -->
+    <div class="mt-6 text-center z-30">
+      <p class="text-xs uppercase tracking-widest text-amber-200/70 font-cinzel">Especialmente para</p>
+      <p class="text-lg font-serif-title text-rose-300 font-semibold mt-0.5">Yomalise</p>
+    </div>
+  </main>
+
+  <div id="letter-modal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-700">
+    <div id="parchment-sheet" class="parchment-sheet w-full max-w-xl max-h-[90vh] rounded-2xl shadow-2xl p-6 sm:p-9 relative overflow-hidden flex flex-col transform scale-90 transition-all duration-500 border border-amber-300/40 text-stone-800">
+      
+      <!-- Vintage Corner Decors -->
+      <div class="absolute top-2 left-2 text-amber-800/30 text-2xl font-cinzel">❧</div>
+      <div class="absolute top-2 right-2 text-amber-800/30 text-2xl font-cinzel">☙</div>
+      <div class="absolute bottom-2 left-2 text-amber-800/30 text-2xl font-cinzel">☙</div>
+      <div class="absolute bottom-2 right-2 text-amber-800/30 text-2xl font-cinzel">❧</div>
+
+      <!-- Close Button -->
+      <button id="close-letter-btn" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-stone-300/70 hover:bg-stone-400/80 text-stone-800 flex items-center justify-center transition z-20">
+        ✕
+      </button>
+
+      <!-- Scrollable Letter Content -->
+      <div class="overflow-y-auto pr-2 sm:pr-3 letter-scroll flex-1 my-1">
+        <div class="text-center mb-5">
+          <p class="text-[10px] sm:text-xs uppercase tracking-widest text-amber-900/70 font-cinzel font-semibold">Feliz Cumpleaños</p>
+          <h2 class="text-2xl sm:text-3xl font-serif-title text-stone-900 font-bold mt-1">Para: Yomalise ❤️</h2>
+          <div class="w-20 h-0.5 bg-rose-800/30 mx-auto mt-2 rounded"></div>
+        </div>
+
+        <div class="text-sm sm:text-base text-stone-800 leading-relaxed space-y-4 px-1 sm:px-2 font-normal font-sans">
+          <p>
+           Hoy, 2 de noviembre, nació una gran y hermosa mujer. Y solo quiero decirte algo: qué bonito es cuando una vez en la vida encuentras a alguien que cambia tu mundo, que te anima cuando te sientes mal y que, sin darse cuenta, se convierte en la razón de tantas sonrisas.  
+          </p>
+
+          <p>
+            Mi amor, nada podría cambiar lo que significas para mí. Hay tantas cosas que quisiera decirte, tantos sentimientos que quisiera expresarte, pero por ahora solo quiero abrazarte y recordarte que nuestro amor iluminará siempre el camino.
+          </p>
+
+          <p>
+            Cariño, eres la bendición que tanto esperé. Cuando descansas entre mis brazos, todavía me resulta difícil creer lo afortunado que soy de tenerte. Es como si estuviéramos en el cielo, porque el amor es todo lo que necesito y lo encontré ahí, en tu corazón.
+          </p>
+
+          <p>
+            He esperado tanto tiempo para que alguien llegara, para que el amor tocara mi puerta, y hoy nuestros sueños comienzan a hacerse realidad. En los buenos y en los malos momentos, quiero que tengas la seguridad de que estaré ahí para ti.
+          </p>
+           <p>
+            Mi Yomalise, feliz cumpleaños. Que la vida te regale muchísimos años de felicidad, salud y sueños cumplidos. Gracias por existir, por llegar a mi vida y por permitirme compartir este amor contigo.
+           No sé qué nos espera mañana, pero sí sé algo: quiero seguir construyendo miles de recuerdos a tu lado.</p>
+
+          <p class="font-medium text-rose-900">
+            Te amo, Yomalise.  ❤️
+          </p>
+        </div>
+
+        <!-- Signature -->
+        <div class="mt-8 text-right pr-4">
+          <p class="font-signature text-3xl sm:text-4xl text-rose-900 font-bold">Con amor, Cesar</p>
+        </div>
+      </div>
+
+      <!-- Modal Footer with Music Status -->
+      <div class="pt-3 border-t border-amber-800/15 flex items-center justify-between text-xs text-stone-600">
+        <span class="flex items-center gap-1.5 font-medium">
+          <span class="text-rose-600 animate-spin">💿</span>
+          <span>Sonando: <strong>Contigo Na Más</strong></span>
+        </span>
+        <button id="fold-envelope-btn" class="text-rose-800 font-semibold hover:underline">
+          Volver al sobre ✉
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="w-full text-center py-3 text-[11px] text-stone-500 z-20">
+    Hecho con todo el amor del mundo para ti ✨
+  </footer>
+
+  
+
+  <script>
+    // State management
+    const state = {
+      isOpen: false,
+      isPlaying: false,
+      youtubeReady: false,
+      videoId: 'gST7bQGGaGA' // 'Contigo Na Más - Remix'
+    };
+
+    let ytPlayer = null;
+
+    // Load YouTube API
+    window.onYouTubeIframeAPIReady = function() {
+      ytPlayer = new YT.Player('youtube-player', {
+        height: '180',
+        width: '240',
+        videoId: state.videoId,
+        playerVars: {
+          'autoplay': 0,
+          'controls': 0,
+          'loop': 1,
+          'playlist': state.videoId,
+          'playsinline': 1,
+          'rel': 0,
+          'modestbranding': 1
+        },
+        events: {
+          'onReady': onPlayerReady,
+          'onStateChange': onPlayerStateChange
+        }
+      });
+    };
+
+    // Cargar la API oficial de YouTube después de registrar el callback.
+    const youtubeApiScript = document.createElement('script');
+    youtubeApiScript.src = 'https://www.youtube.com/iframe_api';
+    youtubeApiScript.async = true;
+    document.head.appendChild(youtubeApiScript);
+
+    function onPlayerReady(event) {
+      state.youtubeReady = true;
+      event.target.setVolume(85);
+      document.getElementById('music-track-status').textContent = 'Listo para sonar';
+    }
+
+    function onPlayerStateChange(event) {
+      const playIcon = document.getElementById('music-play-icon');
+      const pauseIcon = document.getElementById('music-pause-icon');
+      const statusText = document.getElementById('music-track-status');
+
+      if (event.data === YT.PlayerState.PLAYING) {
+        state.isPlaying = true;
+        playIcon.classList.add('hidden');
+        pauseIcon.classList.remove('hidden');
+        statusText.textContent = 'Sonando en vivo';
+      } else if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) {
+        state.isPlaying = false;
+        playIcon.classList.remove('hidden');
+        pauseIcon.classList.add('hidden');
+        statusText.textContent = 'En pausa';
+      } else if (event.data === YT.PlayerState.BUFFERING) {
+        statusText.textContent = 'Cargando canción...';
+      }
+    }
+
+    function playYouTubeAudio() {
+      if (ytPlayer && typeof ytPlayer.playVideo === 'function') {
+        ytPlayer.playVideo();
+      }
+    }
+
+    function pauseYouTubeAudio() {
+      if (ytPlayer && typeof ytPlayer.pauseVideo === 'function') {
+        ytPlayer.pauseVideo();
+      }
+    }
+
+    // Toggle Play/Pause Button
+    document.getElementById('toggle-music-btn').addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (state.isPlaying) {
+        pauseYouTubeAudio();
+      } else {
+        playYouTubeAudio();
+      }
+    });
+
+    // Volume Slider Event
+    document.getElementById('volume-slider').addEventListener('input', (e) => {
+      const val = parseInt(e.target.value, 10);
+      if (ytPlayer && typeof ytPlayer.setVolume === 'function') {
+        ytPlayer.setVolume(val);
+      }
+    });
+
+    // DOM Elements
+    const envelopeWrapper = document.getElementById('envelope-wrapper');
+    const envelopeTopFlap = document.getElementById('envelope-top-flap');
+    const waxSeal = document.getElementById('wax-seal');
+    const letterPeek = document.getElementById('envelope-letter-peek');
+    const letterModal = document.getElementById('letter-modal');
+    const parchmentSheet = document.getElementById('parchment-sheet');
+    const closeLetterBtn = document.getElementById('close-letter-btn');
+    const foldEnvelopeBtn = document.getElementById('fold-envelope-btn');
+    const instructionPill = document.getElementById('instruction-pill');
+
+    // Envelope Opening Animation Sequence
+    function openEnvelope() {
+      if (state.isOpen) return;
+      state.isOpen = true;
+
+      // Start music upon direct user touch
+      playYouTubeAudio();
+
+      instructionPill.style.opacity = '0';
+      envelopeTopFlap.classList.add('opened');
+      waxSeal.style.opacity = '0';
+      waxSeal.style.transform = 'translate(-50%, -30px) scale(0.6)';
+
+      setTimeout(() => {
+        letterPeek.classList.add('extracted');
+      }, 400);
+
+      setTimeout(() => {
+        letterModal.classList.remove('opacity-0', 'pointer-events-none');
+        parchmentSheet.classList.remove('scale-90');
+        parchmentSheet.classList.add('scale-100');
+        burstConfettiHearts();
+      }, 1050);
+    }
+
+    function closeEnvelope() {
+      letterModal.classList.add('opacity-0', 'pointer-events-none');
+      parchmentSheet.classList.remove('scale-100');
+      parchmentSheet.classList.add('scale-90');
+
+      setTimeout(() => {
+        letterPeek.classList.remove('extracted');
+        setTimeout(() => {
+          envelopeTopFlap.classList.remove('opened');
+          waxSeal.style.opacity = '1';
+          waxSeal.style.transform = 'translate(-50%, 0) scale(1)';
+          instructionPill.style.opacity = '1';
+          state.isOpen = false;
+        }, 400);
+      }, 300);
+    }
+
+    envelopeWrapper.addEventListener('click', openEnvelope);
+    closeLetterBtn.addEventListener('click', closeEnvelope);
+    foldEnvelopeBtn.addEventListener('click', closeEnvelope);
+
+    // Floating background particles (Rose petals and hearts)
+    function initFloatingParticles() {
+      const container = document.getElementById('particles-container');
+      const icons = ['🌹', '❤️', '✨', '💖', '🌸', '🕊️'];
+      for (let i = 0; i < 22; i++) {
+        const item = document.createElement('div');
+        item.className = 'floating-particle text-rose-300/35';
+        item.style.left = `${Math.random() * 100}vw`;
+        item.style.animationDuration = `${7 + Math.random() * 8}s`;
+        item.style.animationDelay = `${Math.random() * 6}s`;
+        item.style.fontSize = `${14 + Math.random() * 16}px`;
+        item.textContent = icons[Math.floor(Math.random() * icons.length)];
+        container.appendChild(item);
+      }
+    }
+
+    // Burst celebration effect
+    function burstConfettiHearts() {
+      for (let i = 0; i < 16; i++) {
+        const h = document.createElement('div');
+        h.className = 'fixed z-50 text-xl pointer-events-none transition-all duration-1000 ease-out';
+        h.textContent = ['💖', '✨', '🌹', '❤️'][Math.floor(Math.random() * 4)];
+        h.style.left = '50%';
+        h.style.top = '50%';
+        h.style.transform = `translate(-50%, -50%)`;
+        document.body.appendChild(h);
+
+        const angle = Math.random() * Math.PI * 2;
+        const radius = 100 + Math.random() * 200;
+        const tx = Math.cos(angle) * radius;
+        const ty = Math.sin(angle) * radius;
+
+        requestAnimationFrame(() => {
+          h.style.transform = `translate(${tx}px, ${ty}px) scale(0)`;
+          h.style.opacity = '0';
+        });
+
+        setTimeout(() => h.remove(), 1100);
+      }
+    }
+
+    window.onload = function() {
+      initFloatingParticles();
+      initBirthdayBalloons();
+    };
+
+    // Globos medianos que suben con el mensaje de cumpleaños
+    function initBirthdayBalloons() {
+      const container = document.getElementById('birthday-balloons');
+      const colors = [
+        'linear-gradient(145deg, #ff8fab, #d62963)',
+        'linear-gradient(145deg, #f9c74f, #e58b22)',
+        'linear-gradient(145deg, #cdb4db, #8055a5)',
+        'linear-gradient(145deg, #90dbf4, #347ca6)',
+        'linear-gradient(145deg, #ffafcc, #c9184a)',
+        'linear-gradient(145deg, #f6bd60, #bc6c25)',
+        'linear-gradient(145deg, #b8e0d2, #438a78)',
+        'linear-gradient(145deg, #f28482, #b23a48)'
+      ];
+      for (let i = 0; i < 10; i++) {
+        const balloon = document.createElement('div');
+        balloon.className = 'birthday-balloon';
+        balloon.textContent = 'FELIZ CUMPLEAÑOS YOMALISE';
+        balloon.style.background = colors[i % colors.length];
+        balloon.style.left = `${3 + Math.random() * 91}%`;
+        balloon.style.animationDuration = `${15 + Math.random() * 10}s`;
+        balloon.style.animationDelay = `${-Math.random() * 24}s`;
+        balloon.style.transform = `scale(${0.88 + Math.random() * 0.22})`;
+        const string = document.createElement('span');
+        string.className = 'balloon-string';
+        balloon.appendChild(string);
+        container.appendChild(balloon);
+      }
+    }
+
+  </script>
+</body>
+</html>
